@@ -10,7 +10,7 @@ public class Main {
         JFrame frame = new JFrame("Calendar");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(900,500);
-        frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);//
         frame.getContentPane().setBackground(Color.white);
         frame.setResizable(false);
 
