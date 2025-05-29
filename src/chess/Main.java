@@ -10,13 +10,11 @@ public class Main extends JFrame {
         JFrame frame = new JFrame();
         frame.setLayout(new GridLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(680, 680);
+        frame.setSize(800, 800);
         frame.setLocationRelativeTo(null);//가운데 배치
 
-        ChessBoard board = new ChessBoard();
+        Board board = new Board();
         frame.add(board);
-
-
 
         frame.setVisible(true);
     }

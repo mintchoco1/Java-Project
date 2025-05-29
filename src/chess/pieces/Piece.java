@@ -1,35 +1,49 @@
 package chess.pieces;
 
-import chess.ChessBoard;
+import chess.Board;
 
 import javax.imageio.ImageIO;//이미지 파일을 읽거나 저장할 수 있게 해주는 유틸리티 클래스
 import java.awt.*;
 import java.awt.image.BufferedImage;//이미지를 메모리에 불러와서 처리할 수 있게 해주는 클래스
-import java.io.File;//이미지 파일을 읽다가 오류가 날 수 있기 때문에 try-catch에서 예외 처리할 때 필요
 import java.io.IOException;
 
-public class Piece {
-    public int col;
-    public int row;
+public abstract class Piece {
+    protected int col;
+    protected int row;
+    protected int xpos;
+    protected int ypos;
 
-    public boolean isWhite;
-    public String name;
-    public int value;
+    protected boolean isWhite;
+    protected String name;//말 이름
+    protected int value;//체스말 점수
 
-    //jbutton 에 글자가 아니라 말 그림 아이콘을 넣고 싶을 때
-    BufferedImage sheet;
-    {
+    protected final int titlesize = 80;
+
+    protected static int Sheet_Scale;
+    protected static BufferedImage Sheet;
+    static {
         try {
-            sheet = ImageIO.read(ClassLoader.getSystemResourceAsStream("Chess_Pieces_Sprite.syg.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            Sheet = ImageIO.read(Piece.class.getResourceAsStream("/piece.png"));
+            Sheet_Scale = Sheet.getWidth() / 6;
+        } catch (IOException e) { throw new RuntimeException(e); }
     }
-    Image sprite;
 
-    ChessBoard board;
+    protected Image sprite;
 
-    public Piece(ChessBoard board){
+    Board board;
+
+    public Piece(Board board, int row, int col, boolean isWhite){
         this.board = board;
+        this.col = col;
+        this.row = row;
+        this.isWhite = isWhite;
+    }
+
+    public Piece(Board board){
+        this.board = board;
+    }
+
+    public void paint(Graphics2D g2d){
+        g2d.drawImage(sprite, xpos, ypos, null);
     }
 }
