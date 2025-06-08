@@ -13,9 +13,22 @@ public class Board extends JPanel {
 
     ArrayList<Piece> PieceList = new ArrayList<>();
 
+    public Piece seletedPiece;
+
     public Board() {
         this.setPreferredSize(new Dimension(cols * titlesize, rows * titlesize));//내가 원하는 사이즈로 설정
         addPiece();
+    }
+
+    public Piece getPiece(int col, int row) {
+
+        for (Piece piece : PieceList) {
+            if (piece.col == col && piece.row == row){
+                return piece;
+            }
+        }
+
+        return null;
     }
 
     public void addPiece(){
@@ -36,6 +49,24 @@ public class Board extends JPanel {
         PieceList.add(new Pawn(this, 5, 1, false));
         PieceList.add(new Pawn(this, 6, 1, false));
         PieceList.add(new Pawn(this, 7, 1, false));
+
+        PieceList.add(new Rook(this, 0, 7, true));
+        PieceList.add(new Knight(this, 1, 7, true));
+        PieceList.add(new Bishop(this, 2, 7, true));
+        PieceList.add(new Queen(this, 3, 7, true));
+        PieceList.add(new King(this, 4, 7, true));
+        PieceList.add(new Bishop(this, 5, 7, true));
+        PieceList.add(new Knight(this, 6, 7, true));
+        PieceList.add(new Rook(this, 7, 7, true));
+
+        PieceList.add(new Pawn(this, 0, 6, true));
+        PieceList.add(new Pawn(this, 1, 6, true));
+        PieceList.add(new Pawn(this, 2, 6, true));
+        PieceList.add(new Pawn(this, 3, 6, true));
+        PieceList.add(new Pawn(this, 4, 6, true));
+        PieceList.add(new Pawn(this, 5, 6, true));
+        PieceList.add(new Pawn(this, 6, 6, true));
+        PieceList.add(new Pawn(this, 7, 6, true));
     }
 
     //paintComponent 메소드는 jpanel 등에서 화면을 그릴 때 자동으로 호출

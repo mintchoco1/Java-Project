@@ -8,10 +8,10 @@ import java.awt.image.BufferedImage;//이미지를 메모리에 불러와서 처
 import java.io.IOException;
 
 public abstract class Piece {
-    protected int col;
-    protected int row;
-    protected int xpos;
-    protected int ypos;
+    public int col;
+    public int row;
+    public int xpos;
+    public int ypos;
 
     protected boolean isWhite;
     protected String name;//말 이름
