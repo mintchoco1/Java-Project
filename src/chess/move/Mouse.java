@@ -6,11 +6,11 @@ import chess.pieces.Piece;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class Event extends MouseAdapter {
+public class Mouse extends MouseAdapter {
 
     Board board;
 
-    public Event(Board board) {
+    public Mouse(Board board) {
         this.board = board;
     }
 
@@ -35,11 +35,33 @@ public class Event extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
 
+        int col = e.getX() / board.titlesize;
+        int row = e.getY() / board.titlesize;
+
+        if (board.seletedPiece != null) {
+            Move move = new Move(board, board.seletedPiece, col, row);
+
+            if (board.isValidMove(move)){
+                board.makeMove(move);
+            } else {
+                board.seletedPiece.xpos = board.seletedPiece.col * board.titlesize;
+                board.seletedPiece.ypos = board.seletedPiece.row * board.titlesize;
+            }
+        }
+
+        board.seletedPiece = null;
+        board.repaint();
     }
 
-
+    //마우스를 누른 상태로 움직일 때 계속 호출
     @Override
     public void mouseDragged(MouseEvent e) {
 
+        if (board.seletedPiece != null) {
+            board.seletedPiece.xpos = e.getX() - board.titlesize / 2;
+            board.seletedPiece.ypos = e.getY() - board.titlesize / 2;
+
+            board.repaint();
+        }
     }
 }

@@ -7,11 +7,11 @@ public class Move {
 
     int oldCol;
     int oldRow;
-    int newCol;
-    int newRow;
+    public int newCol;
+    public int newRow;
 
-    Piece piece;
-    Piece capture;
+    public Piece piece;
+    public Piece capture;
 
     public Move(Board board,Piece piece, int newCol, int newRow) {
         this.oldCol = piece.col;

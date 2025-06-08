@@ -1,5 +1,6 @@
 package chess;
 
+import chess.move.Move;
 import chess.pieces.*;
 
 import javax.swing.*;
@@ -29,6 +30,21 @@ public class Board extends JPanel {
         }
 
         return null;
+    }
+
+    public void makeMove(Move move) {
+        move.piece.col = move.newCol;
+        move.piece.row = move.newRow;
+        move.piece.xpos = move.newCol * titlesize;
+        move.piece.ypos = move.newRow * titlesize;
+    }
+
+    public void capture(Move move) {
+        PieceList.remove(move.capture);
+    }
+
+    public boolean isValidMove(Move move) {
+        return true;
     }
 
     public void addPiece(){
