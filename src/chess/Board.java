@@ -1,5 +1,6 @@
 package chess;
 
+import chess.move.Mouse;
 import chess.move.Move;
 import chess.pieces.*;
 
@@ -14,10 +15,16 @@ public class Board extends JPanel {
 
     ArrayList<Piece> PieceList = new ArrayList<>();
 
+    Mouse mouse = new Mouse(this);
+
     public Piece seletedPiece;
 
     public Board() {
         this.setPreferredSize(new Dimension(cols * titlesize, rows * titlesize));//내가 원하는 사이즈로 설정
+
+        this.addMouseListener(mouse);
+        this.addMouseMotionListener(mouse);
+
         addPiece();
     }
 
@@ -37,6 +44,8 @@ public class Board extends JPanel {
         move.piece.row = move.newRow;
         move.piece.xpos = move.newCol * titlesize;
         move.piece.ypos = move.newRow * titlesize;
+
+        capture(move);
     }
 
     public void capture(Move move) {
@@ -44,7 +53,18 @@ public class Board extends JPanel {
     }
 
     public boolean isValidMove(Move move) {
+
+        if(sameteam(move.piece, move.capture)) {
+            return false;
+        }
         return true;
+    }
+
+    public boolean sameteam(Piece p1, Piece p2) {
+        if((p1 == null || p2 == null)){
+            return false;
+        }
+        return p1.isWhite == p2.isWhite;
     }
 
     public void addPiece(){

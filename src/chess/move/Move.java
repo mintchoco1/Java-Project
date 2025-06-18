@@ -5,8 +5,8 @@ import chess.pieces.Piece;
 
 public class Move {
 
-    int oldCol;
-    int oldRow;
+    public int oldCol;
+    public int oldRow;
     public int newCol;
     public int newRow;
 

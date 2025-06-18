@@ -13,7 +13,7 @@ public abstract class Piece {
     public int xpos;
     public int ypos;
 
-    protected boolean isWhite;
+    public boolean isWhite;
     protected String name;//말 이름
     protected int value;//체스말 점수
 
