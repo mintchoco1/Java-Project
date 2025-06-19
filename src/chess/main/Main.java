@@ -7,7 +7,9 @@ public class Main extends JFrame {
 
     public static void main(String[] args) {
 
-        JFrame frame = new JFrame();
+        SwingUtilities.invokeLater(ChessApp::new);
+
+/*        JFrame frame = new JFrame();
         frame.setLayout(new GridLayout());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(800, 800);
@@ -16,6 +18,6 @@ public class Main extends JFrame {
         Board board = new Board();
         frame.add(board);
 
-        frame.setVisible(true);
+        frame.setVisible(true);*/
     }
 }

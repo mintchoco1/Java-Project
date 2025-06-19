@@ -114,7 +114,7 @@ public class Board extends JPanel {
         if(isGameOver) {
             return false;
         }
-        if(move.piece.isWhite == isWhiteToMove) {
+        if(move.piece.isWhite != isWhiteToMove) {
             return false;
         }
 
@@ -217,6 +217,17 @@ public class Board extends JPanel {
         }
         return names.size() < 3;
     }
+
+    public void startNewGame(boolean whiteStarts) {
+        PieceList.clear();    // 말 모두 삭제
+        addPiece();           // 처음 배치
+        isWhiteToMove  = whiteStarts;
+        isGameOver     = false;
+        selectedPiece  = null;
+        enPassantTile  = -1;
+        repaint();
+    }
+
 
     //paintComponent 메소드는 jpanel 등에서 화면을 그릴 때 자동으로 호출
     //Graphics g 는 그림을 그릴 도구이고 2d 그래픽ㅣ능을 사용하려고 캐스팅함
