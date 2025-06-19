@@ -34,11 +34,11 @@ public class Pawn extends Piece{
             return true;
         }
         //capture left
-        if(col == this.col - 1 && row == this.row - colorIndex && board.getPiece(col, row) == null){
+        if(col == this.col - 1 && row == this.row - colorIndex && board.getPiece(col, row) != null){
             return true;
         }
         //capture right
-        if(col == this.col + 1 && row == this.row - colorIndex && board.getPiece(col, row) == null){
+        if(col == this.col + 1 && row == this.row - colorIndex && board.getPiece(col, row) != null){
             return true;
         }
 

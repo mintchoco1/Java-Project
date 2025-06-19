@@ -109,4 +109,21 @@ public class CheckScanner {
     private boolean checkPawn(Piece p, Piece k, int col, int row){
         return p != null && !board.sameteam(p, k) && p.name.equals("Pawn");
     }
+
+    public boolean isGameOver(Piece king){
+        for(Piece piece : board.PieceList){
+            if(board.sameteam(piece, king)){
+                board.selectedPiece = piece == king ? king : null;
+                for(int row = 0; row < board.rows; row++){
+                    for(int col = 0; col < board.cols; col++){
+                        Move move = new Move(board, piece, col, row);
+                        if(board.isValidMove(move)){
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
 }

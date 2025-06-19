@@ -5,6 +5,7 @@ import chess.pieces.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class Board extends JPanel {
     public int titlesize = 80;
@@ -20,6 +21,9 @@ public class Board extends JPanel {
     public CheckScanner checkScanner = new CheckScanner(this);
 
     public int enPassantTile = -1;
+
+    private boolean isWhiteToMove = true;
+    private boolean isGameOver = false;
 
     public Board() {
         this.setPreferredSize(new Dimension(cols * titlesize, rows * titlesize));//내가 원하는 사이즈로 설정
@@ -56,6 +60,9 @@ public class Board extends JPanel {
 
             capture(move.capture);
 
+            isWhiteToMove = !isWhiteToMove;
+
+            updateGameState();
     }
 
     private void moveKing(Move move) {
@@ -103,6 +110,13 @@ public class Board extends JPanel {
     }
 
     public boolean isValidMove(Move move) {
+
+        if(isGameOver) {
+            return false;
+        }
+        if(move.piece.isWhite == isWhiteToMove) {
+            return false;
+        }
 
         if(sameteam(move.piece, move.capture)) {
             return false;
@@ -176,6 +190,32 @@ public class Board extends JPanel {
         PieceList.add(new Pawn(this, 5, 6, true));
         PieceList.add(new Pawn(this, 6, 6, true));
         PieceList.add(new Pawn(this, 7, 6, true));
+    }
+
+    private void updateGameState(){
+        Piece king = findKing(isWhiteToMove);
+        if(checkScanner.isGameOver(king)){
+            if(checkScanner.isKingChecked(new Move(this, king, king.col,  king.row))){
+                System.out.println(isWhiteToMove ? "Black Wins!" : "White Wins!");
+            }else{
+                System.out.println("Stalemate!");
+            }
+            isGameOver = true;
+        }else if(insufficientMaterial(true) && insufficientMaterial(false)){
+            System.out.println("Insufficient material!");
+            isGameOver = true;
+        }
+    }
+
+    private boolean insufficientMaterial(boolean isWhite){
+        ArrayList<String> names = PieceList.stream()
+                .filter(p -> p.isWhite == isWhite)
+                .map(p -> p.name)
+                .collect(Collectors.toCollection(ArrayList::new));
+        if(names.contains("Queen") || names.contains("King") || names.contains("Rook") || names.contains("Pawn")){
+            return false;
+        }
+        return names.size() < 3;
     }
 
     //paintComponent 메소드는 jpanel 등에서 화면을 그릴 때 자동으로 호출
