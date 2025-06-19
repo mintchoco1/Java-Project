@@ -1,6 +1,6 @@
 package chess.pieces;
 
-import chess.Board;
+import chess.main.Board;
 
 import javax.imageio.ImageIO;//이미지 파일을 읽거나 저장할 수 있게 해주는 유틸리티 클래스
 import java.awt.*;
@@ -14,13 +14,17 @@ public abstract class Piece {
     public int ypos;
 
     public boolean isWhite;
-    protected String name;//말 이름
+    public String name;//말 이름
     protected int value;//체스말 점수
 
     protected final int titlesize = 80;
 
     protected static int Sheet_Scale;
     protected static BufferedImage Sheet;
+
+    public boolean isFirstMove = true;
+
+
     static {
         try {
             Sheet = ImageIO.read(Piece.class.getResourceAsStream("/piece.png"));
@@ -41,6 +45,13 @@ public abstract class Piece {
 
     public Piece(Board board){
         this.board = board;
+    }
+
+    public boolean isValidMovement(int col, int row){
+        return true;
+    }
+    public boolean moveCollideswithPiece(int col, int row){
+        return false;
     }
 
     public void paint(Graphics2D g2d){

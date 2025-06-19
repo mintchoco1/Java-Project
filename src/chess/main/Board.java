@@ -1,7 +1,5 @@
-package chess;
+package chess.main;
 
-import chess.move.Mouse;
-import chess.move.Move;
 import chess.pieces.*;
 
 import javax.swing.*;
@@ -17,7 +15,11 @@ public class Board extends JPanel {
 
     Mouse mouse = new Mouse(this);
 
-    public Piece seletedPiece;
+    public Piece selectedPiece;
+
+    public CheckScanner checkScanner = new CheckScanner(this);
+
+    public int enPassantTile = -1;
 
     public Board() {
         this.setPreferredSize(new Dimension(cols * titlesize, rows * titlesize));//내가 원하는 사이즈로 설정
@@ -40,21 +42,78 @@ public class Board extends JPanel {
     }
 
     public void makeMove(Move move) {
-        move.piece.col = move.newCol;
-        move.piece.row = move.newRow;
-        move.piece.xpos = move.newCol * titlesize;
-        move.piece.ypos = move.newRow * titlesize;
+        if(move.piece.name.equals("Pawn")){
+            movePawn(move);
+        }else if(move.piece.name.equals("King")) {
+            moveKing(move);
+        }
+            move.piece.col = move.newCol;
+            move.piece.row = move.newRow;
+            move.piece.xpos = move.newCol * titlesize;
+            move.piece.ypos = move.newRow * titlesize;
 
-        capture(move);
+            move.piece.isFirstMove = false;
+
+            capture(move.capture);
+
     }
 
-    public void capture(Move move) {
-        PieceList.remove(move.capture);
+    private void moveKing(Move move) {
+        if (Math.abs(move.piece.col - move.newCol) == 2) {
+            Piece rook;
+            if (move.piece.col < move.newCol) {
+                rook = getPiece(7, move.piece.row);
+                rook.col = 5;
+            } else {
+                rook = getPiece(0, move.piece.row);
+                rook.col = 3;
+            }
+            rook.xpos = rook.col * titlesize;
+        }
+    }
+
+    private void movePawn(Move move) {
+        //en passant
+        int colorIndex = move.piece.isWhite ? 1 : -1;
+
+        if(getTileNum(move.newCol, move.newRow) == enPassantTile){
+            move.capture = getPiece(move.newCol, move.newRow + colorIndex);
+        }
+        if(Math.abs(move.piece.row - move.newRow) == 2){
+            enPassantTile = getTileNum(move.newCol, move.newRow + colorIndex);
+        }else {
+            enPassantTile = -1;
+        }
+
+        //promotions
+        colorIndex = move.piece.isWhite ? 0 : 7;
+        if(move.newRow == colorIndex){
+            promotePawn(move);
+        }
+
+    }
+
+    private void promotePawn(Move move) {
+        PieceList.add(new Queen(this, move.newCol, move.newRow, move.piece.isWhite));
+        capture(move.piece);
+    }
+
+    public void capture(Piece piece) {
+        PieceList.remove(piece);
     }
 
     public boolean isValidMove(Move move) {
 
         if(sameteam(move.piece, move.capture)) {
+            return false;
+        }
+        if(!move.piece.isValidMovement(move.newCol, move.newRow)) {
+            return false;
+        }
+        if(move.piece.moveCollideswithPiece(move.newCol, move.newRow)) {
+            return false;
+        }
+        if(checkScanner.isKingChecked(move)){
             return false;
         }
         return true;
@@ -65,6 +124,20 @@ public class Board extends JPanel {
             return false;
         }
         return p1.isWhite == p2.isWhite;
+    }
+
+    public int getTileNum(int col, int row){
+        return row * rows + col;
+    }
+
+
+    public Piece findKing(boolean isWhite) {
+        for(Piece piece : PieceList) {
+            if(isWhite == piece.isWhite && piece.name.equals("King")){
+                return piece;
+            }
+        }
+        return null;
     }
 
     public void addPiece(){
@@ -112,10 +185,23 @@ public class Board extends JPanel {
         super.paintComponent(g);//이전 그려진 배경이 남을 수 있음. 없으면 잔상이 남을 수 있음
         Graphics2D g2d = (Graphics2D) g;
 
+        //보드 색
         for(int r = 0; r < rows; r++) {
             for(int c = 0; c < cols; c++) {
                 g2d.setColor((c + r) % 2 == 0 ? Color.LIGHT_GRAY : Color.DARK_GRAY);
                 g2d.fillRect(c * titlesize, r * titlesize, titlesize, titlesize);
+            }
+        }
+
+        //기물 거리 하이라이트
+        if(selectedPiece!= null) {
+            for (int r = 0; r < rows; r++) {
+                for (int c = 0; c < cols; c++) {
+                    if (isValidMove(new Move(this, selectedPiece, c, r))) {
+                        g2d.setColor(new Color(68, 180, 57, 190));
+                        g2d.fillRect(c * titlesize, r * titlesize, titlesize, titlesize);
+                    }
+                }
             }
         }
 

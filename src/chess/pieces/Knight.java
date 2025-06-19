@@ -1,8 +1,7 @@
 package chess.pieces;
 
-import chess.Board;
+import chess.main.Board;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class Knight extends Piece{
@@ -20,5 +19,9 @@ public class Knight extends Piece{
         this.sprite = Sheet.getSubimage(3 * Sheet_Scale, isWhite ? 0 : Sheet_Scale,
                 Sheet_Scale, Sheet_Scale).getScaledInstance(board.titlesize, board.titlesize,
                 BufferedImage.SCALE_SMOOTH);
+    }
+
+    public boolean isValidMovement(int col, int row){
+        return Math.abs(col - this.col) * Math.abs(row - this.row) == 2;
     }
 }

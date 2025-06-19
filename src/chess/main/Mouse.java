@@ -1,6 +1,5 @@
-package chess.move;
+package chess.main;
 
-import chess.Board;
 import chess.pieces.Piece;
 
 import java.awt.event.MouseAdapter;
@@ -26,7 +25,7 @@ public class Mouse extends MouseAdapter {
 
         //선택한 말이 있다면, 원래 좌표 기억
         if(piecexy != null) {
-            board.seletedPiece = piecexy;
+            board.selectedPiece = piecexy;
         }
     }
 
@@ -38,18 +37,18 @@ public class Mouse extends MouseAdapter {
         int col = e.getX() / board.titlesize;
         int row = e.getY() / board.titlesize;
 
-        if (board.seletedPiece != null) {
-            Move move = new Move(board, board.seletedPiece, col, row);
+        if (board.selectedPiece != null) {
+            Move move = new Move(board, board.selectedPiece, col, row);
 
             if (board.isValidMove(move)){
                 board.makeMove(move);
             } else {
-                board.seletedPiece.xpos = board.seletedPiece.col * board.titlesize;
-                board.seletedPiece.ypos = board.seletedPiece.row * board.titlesize;
+                board.selectedPiece.xpos = board.selectedPiece.col * board.titlesize;
+                board.selectedPiece.ypos = board.selectedPiece.row * board.titlesize;
             }
         }
 
-        board.seletedPiece = null;
+        board.selectedPiece = null;
         board.repaint();
     }
 
@@ -57,9 +56,9 @@ public class Mouse extends MouseAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
 
-        if (board.seletedPiece != null) {
-            board.seletedPiece.xpos = e.getX() - board.titlesize / 2;
-            board.seletedPiece.ypos = e.getY() - board.titlesize / 2;
+        if (board.selectedPiece != null) {
+            board.selectedPiece.xpos = e.getX() - board.titlesize / 2;
+            board.selectedPiece.ypos = e.getY() - board.titlesize / 2;
 
             board.repaint();
         }

@@ -1,6 +1,5 @@
-package chess.move;
+package chess.main;
 
-import chess.Board;
 import chess.pieces.Piece;
 
 public class Move {
@@ -13,7 +12,7 @@ public class Move {
     public Piece piece;
     public Piece capture;
 
-    public Move(Board board,Piece piece, int newCol, int newRow) {
+    public Move(Board board, Piece piece, int newCol, int newRow) {
         this.oldCol = piece.col;
         this.oldRow = piece.row;
         this.newCol = newCol;
