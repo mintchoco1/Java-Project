@@ -13,7 +13,7 @@ public class ChessApp extends JFrame {
     private String player2Name = "Player 2";
 
     public ChessApp() {
-        setTitle("Chess Master");
+        setTitle("Java Chess");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // CardLayout 설정
@@ -38,7 +38,7 @@ public class ChessApp extends JFrame {
 
         // 프레임 설정
         add(mainPanel);
-        setSize(900, 900);
+        setSize(700, 740);
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
