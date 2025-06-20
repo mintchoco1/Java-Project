@@ -7,7 +7,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class Board extends JPanel {
+public class  Board extends JPanel {
     public int titlesize = 80;
     final int rows = 8;
     final int cols = 8;
